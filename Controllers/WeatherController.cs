@@ -22,14 +22,32 @@ namespace MyWebApi
         [HttpGet]
         public IActionResult DateWeather(DateTime date)
         {
-            WeatherModel rtnmsg = _weather.GetDateWeather(date);
+            string status = string.Empty;
+            WeatherModel rtnmsg = _weather.GetDateWeather(date, out status);
+            if (status == "ok")
+            {
+
+            }
+            else
+            {
+
+            }
             return Ok(rtnmsg);
 
         }
         [HttpGet]
         public IActionResult RangeDateWeather(DateTime start, DateTime end)
         {
-            List<WeatherModel> rtnmsg = _weather.GetRangeDateWeather(start, end);
+            string status = string.Empty;
+            List<WeatherModel> rtnmsg = _weather.GetRangeDateWeather(start, end, out status);
+            if (status == "ok")
+            {
+
+            }
+            else
+            {
+
+            }
             return Ok(rtnmsg);
 
         }

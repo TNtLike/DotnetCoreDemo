@@ -9,19 +9,25 @@ namespace MyWebApi
 {
     public class WeatherApp : IWeather
     {
-        public WeatherModel GetDateWeather(DateTime date)
+        public WeatherModel GetDateWeather(DateTime date, out string status)
         {
-            date = (date == null) ? DateTime.Now : date;
-            return new WeatherModel
+            WeatherModel wm = new WeatherModel();
+            try
             {
-                Date = date,
-                TemperatureC = 33,
-                Summary = "Hot"
-            };
-
+                wm.Date = date;
+                wm.TemperatureC = 33;
+                wm.Summary = "Hot";
+                status = "ok";
+            }
+            catch (Exception e)
+            {
+                status = "error";
+                throw (e);
+            }
+            return wm;
         }
 
-        public List<WeatherModel> GetRangeDateWeather(DateTime start, DateTime end)
+        public List<WeatherModel> GetRangeDateWeather(DateTime start, DateTime end, out string status)
         {
             var weatherInfoList = new List<WeatherModel>();
             try
@@ -36,11 +42,12 @@ namespace MyWebApi
                         Summary = "Hot"
                     });
                 }
+                status = "ok";
             }
             catch (Exception e)
             {
+                status = "error";
                 throw (e);
-
             }
             return weatherInfoList;
         }

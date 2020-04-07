@@ -9,8 +9,8 @@ namespace MyWebApi
 {
     public interface IWeather
     {
-        WeatherModel GetDateWeather(DateTime date);
-        List<WeatherModel> GetRangeDateWeather(DateTime start, DateTime end);
+        WeatherModel GetDateWeather(DateTime date, out string status);
+        List<WeatherModel> GetRangeDateWeather(DateTime start, DateTime end, out string status);
     }
 
 }
