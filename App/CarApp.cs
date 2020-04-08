@@ -8,7 +8,7 @@ using MyWebApi.Models;
 
 namespace MyWebApi
 {
-    public class WeatherApp : IWeather
+    public class CarApp : ICar
     {
         public Car GetCar(string id, out string status)
         {

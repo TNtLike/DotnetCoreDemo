@@ -8,26 +8,26 @@ using MyWebApi.Models;
 
 namespace MyWebApi
 {
-    public class WeatherController : ControllerBase
+    public class CarController : ControllerBase
     {
-        private readonly IWeather _weather;
-        private readonly ILogger<WeatherController> _logger;
-        public WeatherController(ILogger<WeatherController> logger)
+        private readonly ICar _car;
+        private readonly ILogger<CarController> _logger;
+        public CarController(ILogger<CarController> logger)
         {
-            _weather = new WeatherApp();
+            _car = new CarApp();
             _logger = logger;
         }
 
         [HttpGet]
         public IActionResult DateWeather(string id)
         {
-            Car rtnmsg = _weather.GetCar(id, out string status);
+            Car rtnmsg = _car.GetCar(id, out string status);
             return Ok(rtnmsg);
         }
         [HttpGet]
         public IActionResult RangeDateWeather()
         {
-            List<Car> rtnmsg = _weather.GetAllCar(out string status);
+            List<Car> rtnmsg = _car.GetAllCar(out string status);
             return Ok(rtnmsg);
         }
     }

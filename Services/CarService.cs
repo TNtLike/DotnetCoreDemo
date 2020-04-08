@@ -4,10 +4,10 @@ using MyWebApi.Models;
 using Microsoft.Extensions.Configuration;
 namespace MyWebApi.Services
 {
-    public class CarMongoDBService
+    public class CarService
     {
         private readonly IMongoCollection<Car> cars;
-        public CarMongoDBService(CarDatabaseSettings config)
+        public CarService(IMongoDatabaseSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
