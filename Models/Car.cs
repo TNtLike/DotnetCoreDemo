@@ -4,16 +4,18 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MyWebApi.Models
 {
-
-
-
-    public class CarDatabaseSettings : IMongoDatabaseSettings
+    public interface ICarDBSettings
+    {
+        string CollectionName { get; set; }
+        string ConnectionString { get; set; }
+        string DatabaseName { get; set; }
+    }
+    public class CarDBSettings : ICarDBSettings
     {
         public string CollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
-
 
     public class Car
     {

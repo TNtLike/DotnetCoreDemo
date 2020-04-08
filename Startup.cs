@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Options;
+using MyWebApi.Services;
+using MyWebApi.Models;
 namespace MyWebApi
 {
     public class Startup
@@ -19,16 +21,14 @@ namespace MyWebApi
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CarDBSettings>(Configuration.GetSection("CarDBSettings"));
+            services.AddSingleton<ICarDBSettings>(sp => sp.GetRequiredService<IOptions<CarDBSettings>>().Value);
+            services.AddSingleton<CarService>();
             services.AddControllers();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

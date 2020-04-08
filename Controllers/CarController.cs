@@ -5,29 +5,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyWebApi.Models;
+using MyWebApi.Services;
 
 namespace MyWebApi
 {
     public class CarController : ControllerBase
     {
-        private readonly ICar _car;
-        private readonly ILogger<CarController> _logger;
-        public CarController(ILogger<CarController> logger)
+        private readonly CarService _carserver;
+        public CarController(CarService carserver)
         {
-            _car = new CarApp();
-            _logger = logger;
+            _carserver = carserver;
         }
 
         [HttpGet]
-        public IActionResult DateWeather(string id)
+        public IActionResult Car(string id)
         {
-            Car rtnmsg = _car.GetCar(id, out string status);
+            Car rtnmsg = _carserver.Get(id);
             return Ok(rtnmsg);
         }
         [HttpGet]
-        public IActionResult RangeDateWeather()
+        public IActionResult AllCar()
         {
-            List<Car> rtnmsg = _car.GetAllCar(out string status);
+            List<Car> rtnmsg = _carserver.Get();
             return Ok(rtnmsg);
         }
     }
