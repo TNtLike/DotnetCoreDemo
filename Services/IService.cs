@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MyWebApi.Services
 {
-    public interface ITService<T>
+    public interface IBaseService<T>
     {
         List<T> Get();
         T Get(string id);
