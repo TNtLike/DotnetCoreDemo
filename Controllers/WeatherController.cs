@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MyWebApi.Models;
 
 namespace MyWebApi
 {
@@ -18,16 +19,15 @@ namespace MyWebApi
         }
 
         [HttpGet]
-        public IActionResult DateWeather(DateTime date)
+        public IActionResult DateWeather(string id)
         {
-            WeatherModel rtnmsg = _weather.GetDateWeather(date, out string status);
+            Car rtnmsg = _weather.GetCar(id, out string status);
             return Ok(rtnmsg);
-
         }
         [HttpGet]
-        public IActionResult RangeDateWeather(DateTime start, DateTime end)
+        public IActionResult RangeDateWeather()
         {
-            List<WeatherModel> rtnmsg = _weather.GetRangeDateWeather(start: start, end: end, out string status);
+            List<Car> rtnmsg = _weather.GetAllCar(out string status);
             return Ok(rtnmsg);
         }
     }

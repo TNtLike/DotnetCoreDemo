@@ -4,19 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MyWebApi.Models;
 
 namespace MyWebApi
 {
     public class WeatherApp : IWeather
     {
-        public WeatherModel GetDateWeather(DateTime date, out string status)
+        public Car GetCar(string id, out string status)
         {
-            WeatherModel wm = new WeatherModel();
+            Car wm = new Car();
             try
             {
-                wm.Date = date;
-                wm.TemperatureC = 33;
-                wm.Summary = "Hot";
+                wm.Id = id;
+                wm.CarTypeName = "BZ";
                 status = "ok";
             }
             catch (Exception e)
@@ -27,19 +27,16 @@ namespace MyWebApi
             return wm;
         }
 
-        public List<WeatherModel> GetRangeDateWeather(DateTime start, DateTime end, out string status)
+        public List<Car> GetAllCar(out string status)
         {
-            var weatherInfoList = new List<WeatherModel>();
+            var listCar = new List<Car>();
             try
             {
-                var dateSpan = (end - start).TotalDays;
-                for (var i = 0; i <= dateSpan; i++)
+                for (var i = 0; i <= 5; i++)
                 {
-                    weatherInfoList.Add(new WeatherModel
+                    listCar.Add(new Car
                     {
-                        Date = start.AddDays(i),
-                        TemperatureC = 33,
-                        Summary = "Hot"
+                        CarTypeName = "BZ"
                     });
                 }
                 status = "ok";
@@ -49,7 +46,7 @@ namespace MyWebApi
                 status = "error";
                 throw (e);
             }
-            return weatherInfoList;
+            return listCar;
         }
     }
 
