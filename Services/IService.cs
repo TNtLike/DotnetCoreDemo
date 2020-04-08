@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using MyWebApi.Models;
 
 namespace MyWebApi.Services
 {
-    public interface ICarService
+    public interface ITService<T>
     {
-        List<Car> Get();
-        Car Get(string id);
-        Car Create(Car car);
-        void Remove(Car carIn);
+        List<T> Get();
+        T Get(string id);
+        T Create(T obj);
+        void Remove(T objIn);
         void Remove(string id);
     }
 }

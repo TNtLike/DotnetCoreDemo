@@ -5,10 +5,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace MyWebApi.Services
 {
-    public class CarService : ICarService
+    public class CarService : IBaseService<Car>
     {
         private readonly IMongoCollection<Car> _cars;
-        public CarService(ICarDBSettings config)
+        public CarService(IMongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);

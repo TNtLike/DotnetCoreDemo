@@ -25,7 +25,7 @@ namespace MyWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CarDBSettings>(Configuration.GetSection("CarDBSettings"));
-            services.AddSingleton<ICarDBSettings>(sp => sp.GetRequiredService<IOptions<CarDBSettings>>().Value);
+            services.AddSingleton<IMongoDBSettings>(sp => sp.GetRequiredService<IOptions<CarDBSettings>>().Value);
             services.AddSingleton<CarService>();
             services.AddControllers();
         }
