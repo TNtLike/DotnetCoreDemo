@@ -10,9 +10,7 @@ namespace MyWebApi
     public class WeatherController : ControllerBase
     {
         private readonly IWeather _weather;
-
         private readonly ILogger<WeatherController> _logger;
-
         public WeatherController(ILogger<WeatherController> logger)
         {
             _weather = new WeatherApp();
@@ -22,34 +20,15 @@ namespace MyWebApi
         [HttpGet]
         public IActionResult DateWeather(DateTime date)
         {
-            string status = string.Empty;
-            WeatherModel rtnmsg = _weather.GetDateWeather(date, out status);
-            if (status == "ok")
-            {
-
-            }
-            else
-            {
-
-            }
+            WeatherModel rtnmsg = _weather.GetDateWeather(date, out string status);
             return Ok(rtnmsg);
 
         }
         [HttpGet]
         public IActionResult RangeDateWeather(DateTime start, DateTime end)
         {
-            string status = string.Empty;
-            List<WeatherModel> rtnmsg = _weather.GetRangeDateWeather(start, end, out status);
-            if (status == "ok")
-            {
-
-            }
-            else
-            {
-
-            }
+            List<WeatherModel> rtnmsg = _weather.GetRangeDateWeather(start: start, end: end, out string status);
             return Ok(rtnmsg);
-
         }
     }
 }
