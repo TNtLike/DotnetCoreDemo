@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyWebApi.Models;
 using MyWebApi.Services;
+using System.Text.Json;
 
 namespace MyWebApi
 {
@@ -27,6 +28,12 @@ namespace MyWebApi
         public IActionResult AllCar()
         {
             List<Car> rtnmsg = _carserver.Get();
+            return Ok(rtnmsg);
+        }
+        [HttpPost]
+        public IActionResult Car([FromBody] Car car)
+        {
+            Car rtnmsg = _carserver.Create(car);
             return Ok(rtnmsg);
         }
     }

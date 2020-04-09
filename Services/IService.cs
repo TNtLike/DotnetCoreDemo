@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MyWebApi.Services
 {
@@ -9,5 +10,9 @@ namespace MyWebApi.Services
         T Create(T obj);
         void Remove(T objIn);
         void Remove(string id);
+    }
+    public interface IQRCode
+    {
+        Bitmap GetQRCode(string url, int pixel);
     }
 }
