@@ -14,7 +14,6 @@ namespace MyWebApi.Services
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
             _cars = databases.GetCollection<Car>(config.CollectionName);
         }
-
         public List<Car> Get()
         {
             var listCar = new List<Car>();
