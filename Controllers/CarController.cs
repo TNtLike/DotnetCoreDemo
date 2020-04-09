@@ -12,29 +12,38 @@ namespace MyWebApi
 {
     public class CarController : ControllerBase
     {
-        private readonly CarService _carserver;
-        public CarController(CarService carserver)
+        private readonly CarService _carservice;
+        private readonly QRCodeService _qrservice;
+        public CarController(CarService carserver, QRCodeService qrservice)
         {
-            _carserver = carserver;
+            _carservice = carserver;
+            _qrservice = qrservice;
         }
 
         [HttpGet]
         public IActionResult Car(string id)
         {
-            Car rtnmsg = _carserver.Get(id);
+            Car rtnmsg = _carservice.Get(id);
             return Ok(rtnmsg);
         }
         [HttpGet]
         public IActionResult AllCar()
         {
-            List<Car> rtnmsg = _carserver.Get();
+            List<Car> rtnmsg = _carservice.Get();
             return Ok(rtnmsg);
         }
         [HttpPost]
         public IActionResult Car([FromBody] Car car)
         {
-            Car rtnmsg = _carserver.Create(car);
+            Car rtnmsg = _carservice.Create(car);
             return Ok(rtnmsg);
+        }
+
+        [HttpGet]
+        public IActionResult CarCode(string id)
+        {
+            Car carIn = _carservice.Get(id);
+            return Ok();
         }
     }
 }

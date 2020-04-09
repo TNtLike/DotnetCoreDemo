@@ -1,18 +1,17 @@
 using MongoDB.Driver;
 using MyWebApi.Models;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
 
 namespace MyWebApi.Services
 {
-    public class CarService : IBaseService<Car>
+    public class CarService : IDBService<Car>
     {
         private readonly IMongoCollection<Car> _cars;
         public CarService(IMongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
-            _cars = databases.GetCollection<Car>(config.CollectionName);
+            _cars = databases.GetCollection<Car>(config.CarCollectionName);
         }
         public List<Car> Get()
         {
@@ -46,6 +45,7 @@ namespace MyWebApi.Services
 
         public void Remove(string id) =>
             _cars.DeleteOne(car => car.Id == id);
+
     }
 
 }

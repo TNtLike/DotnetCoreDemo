@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace MyWebApi.Services
 {
-    public interface IBaseService<T>
+    public interface IDBService<T>
     {
         List<T> Get();
         T Get(string id);
@@ -11,8 +11,10 @@ namespace MyWebApi.Services
         void Remove(T objIn);
         void Remove(string id);
     }
-    public interface IQRCode
+
+    public interface IQRCodeService<T>
     {
-        Bitmap GetQRCode(string url, int pixel);
+        T CreateCode(string url, int pixel);
+
     }
 }
