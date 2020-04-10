@@ -34,6 +34,8 @@ namespace MyWebApi.Models
     {
 
         public string Id { get; set; }
+
+        public string CarId { get; set; }
         public string Info { get; set; }
         public int Size { get; set; }
         public byte[] CodeImg { get; set; }

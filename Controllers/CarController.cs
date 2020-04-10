@@ -42,8 +42,13 @@ namespace MyWebApi
         [HttpGet]
         public IActionResult CarCode(string id)
         {
-            Car carIn = _carservice.Get(id);
-            return Ok();
+            Code codeIn = _qrservice.GetCarCode(id);
+            if (codeIn == null)
+            {
+                Car carIn = _carservice.Get(id);
+                codeIn = _qrservice.InitCode(id, carIn.CarTypeName, 4);
+            }
+            return Ok(codeIn);
         }
     }
 }

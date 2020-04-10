@@ -11,7 +11,7 @@ namespace MyWebApi.Services
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
-            _cars = databases.GetCollection<Car>(config.CarCollectionName);
+            _cars = databases.GetCollection<Car>(nameof(Car));
         }
         public List<Car> Get()
         {

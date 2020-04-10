@@ -14,7 +14,7 @@ namespace MyWebApi.Services
 
     public interface IQRCodeService<T>
     {
-        T CreateCode(string url, int pixel);
+        T InitCode(string unionid, string url, int pixel);
 
     }
 }
