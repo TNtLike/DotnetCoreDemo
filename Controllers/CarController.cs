@@ -43,16 +43,16 @@ namespace MyWebApi
         }
 
         [HttpPost]
-        public IActionResult Car([FromBody] Car car)
+        public async Task<IActionResult> Car([FromBody] Car car)
         {
-            var rtnmsg = _carservice.Create(car);
+            var rtnmsg = await _carservice.CreateAsync(car);
             return Ok(rtnmsg);
         }
 
         [HttpPut]
-        public IActionResult Car(string id, [FromBody] Car car)
+        public async Task<IActionResult> Car(string id, [FromBody] Car car)
         {
-            var rtnmsg = _carservice.Update(id, car);
+            var rtnmsg = await _carservice.UpdateAsync(id, car);
             return Ok(rtnmsg);
         }
 
