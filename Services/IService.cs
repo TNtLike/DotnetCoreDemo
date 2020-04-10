@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace MyWebApi.Services
 {
@@ -43,8 +43,4 @@ namespace MyWebApi.Services
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
-
-
-
-
 }

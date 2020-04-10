@@ -24,6 +24,10 @@ namespace MyWebApi
         public IActionResult Cars()
         {
             List<Car> rtnmsg = _carservice.GetTs();
+            if (rtnmsg.Count <= 0)
+            {
+                return NotFound();
+            }
             return Ok(rtnmsg);
         }
 
@@ -31,6 +35,10 @@ namespace MyWebApi
         public IActionResult Car(string id)
         {
             Car rtnmsg = _carservice.GetT(id);
+            if (rtnmsg == null)
+            {
+                return NotFound();
+            }
             return Ok(rtnmsg);
         }
 

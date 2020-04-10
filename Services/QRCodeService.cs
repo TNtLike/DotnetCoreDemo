@@ -48,7 +48,6 @@ namespace MyWebApi.Services
             return code;
         }
 
-
         #region 存储二维码
         public List<Code> GetTs() =>
             _codes.Find<Code>(code => true).ToList();
