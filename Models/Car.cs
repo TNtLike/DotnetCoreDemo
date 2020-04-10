@@ -1,24 +1,10 @@
 using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace MyWebApi.Models
 {
-    public interface IMongoDBSettings
-    {
-        string CarCollectionName { get; set; }
-        string CodeCollectionName { get; set; }
-        string ConnectionString { get; set; }
-        string DatabaseName { get; set; }
-    }
-    public class MyDBSettings : IMongoDBSettings
-    {
-        public string CarCollectionName { get; set; }
-        public string CodeCollectionName { get; set; }
-        public string ConnectionString { get; set; }
-        public string DatabaseName { get; set; }
-    }
-
     public class Car
     {
         public string Id { get; set; }

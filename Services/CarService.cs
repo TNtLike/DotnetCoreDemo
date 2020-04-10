@@ -1,10 +1,10 @@
 using MongoDB.Driver;
 using MyWebApi.Models;
 using System.Collections.Generic;
-
+using System;
 namespace MyWebApi.Services
 {
-    public class CarService : IDBService<Car>
+    public class CarService : IBaseService<Car>
     {
         private readonly IMongoCollection<Car> _cars;
         public CarService(IMongoDBSettings config)
@@ -13,39 +13,47 @@ namespace MyWebApi.Services
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
             _cars = databases.GetCollection<Car>(nameof(Car));
         }
-        public List<Car> Get()
-        {
-            var listCar = new List<Car>();
-            for (var i = 0; i <= 5; i++)
-            {
-                listCar.Add(new Car
-                {
-                    Id = i.ToString(),
-                    CarTypeName = "BZ"
-                });
-            }
-            return listCar;
-        }
+        public List<Car> GetTs() =>
+            _cars.Find<Car>(car => true).ToList();
 
-
-        public Car Get(string id) =>
+        public Car GetT(string id) =>
             _cars.Find<Car>(car => car.Id == id).FirstOrDefault();
 
-        public Car Create(Car car)
+        public BaseService Create(Car car)
         {
-            _cars.InsertOne(car);
-            return car;
+            try
+            {
+                _cars.InsertOne(car);
+                return new BaseService();
+            }
+            catch (Exception e)
+            {
+                return new BaseService($"An error occurred : {e.Message}");
+            }
         }
-
-        public void Update(string id, Car carIn) =>
-            _cars.ReplaceOne(car => car.Id == id, carIn);
-
-        public void Remove(Car carIn) =>
-            _cars.DeleteOne(car => car.Id == carIn.Id);
-
-        public void Remove(string id) =>
-            _cars.DeleteOne(car => car.Id == id);
-
+        public BaseService Update(string id, Car carIn)
+        {
+            try
+            {
+                _cars.ReplaceOne(car => car.Id == id, carIn);
+                return new BaseService();
+            }
+            catch (Exception e)
+            {
+                return new BaseService($"An error occurred : {e.Message}");
+            }
+        }
+        public BaseService Remove(string id)
+        {
+            try
+            {
+                _cars.DeleteOne(car => car.Id == id);
+                return new BaseService();
+            }
+            catch (Exception e)
+            {
+                return new BaseService($"An error occurred : {e.Message}");
+            }
+        }
     }
-
 }

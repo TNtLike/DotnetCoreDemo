@@ -21,21 +21,30 @@ namespace MyWebApi
         }
 
         [HttpGet]
+        public IActionResult Cars()
+        {
+            List<Car> rtnmsg = _carservice.GetTs();
+            return Ok(rtnmsg);
+        }
+
+        [HttpGet]
         public IActionResult Car(string id)
         {
-            Car rtnmsg = _carservice.Get(id);
+            Car rtnmsg = _carservice.GetT(id);
             return Ok(rtnmsg);
         }
-        [HttpGet]
-        public IActionResult AllCar()
-        {
-            List<Car> rtnmsg = _carservice.Get();
-            return Ok(rtnmsg);
-        }
+
         [HttpPost]
         public IActionResult Car([FromBody] Car car)
         {
-            Car rtnmsg = _carservice.Create(car);
+            var rtnmsg = _carservice.Create(car);
+            return Ok(rtnmsg);
+        }
+
+        [HttpPut]
+        public IActionResult Car(string id, [FromBody] Car car)
+        {
+            var rtnmsg = _carservice.Update(id, car);
             return Ok(rtnmsg);
         }
 
@@ -45,7 +54,7 @@ namespace MyWebApi
             Code codeIn = _qrservice.GetCarCode(id);
             if (codeIn == null)
             {
-                Car carIn = _carservice.Get(id);
+                Car carIn = _carservice.GetT(id);
                 codeIn = _qrservice.InitCode(id, carIn.CarTypeName, 4);
             }
             return Ok(codeIn);

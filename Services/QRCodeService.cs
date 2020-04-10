@@ -8,7 +8,7 @@ using System;
 
 namespace MyWebApi.Services
 {
-    public class QRCodeService : IQRCodeService<Code>, IDBService<Code>
+    public class QRCodeService : IBaseService<Code>, IQRCodeService<Code>
     {
 
         private readonly IMongoCollection<Code> _codes;
@@ -50,10 +50,10 @@ namespace MyWebApi.Services
 
 
         #region 存储二维码
-        public List<Code> Get() =>
+        public List<Code> GetTs() =>
             _codes.Find<Code>(code => true).ToList();
 
-        public Code Get(string id) =>
+        public Code GetT(string id) =>
             _codes.Find<Code>(code => code.Id == id).FirstOrDefault();
         public Code GetCarCode(string carid)
         {
@@ -61,19 +61,44 @@ namespace MyWebApi.Services
             return carcode;
         }
 
-        public Code Create(Code code)
+        public BaseService Create(Code code)
         {
-            _codes.InsertOne(code);
-            return code;
+            try
+            {
+                _codes.InsertOne(code);
+                return new BaseService();
+            }
+            catch (Exception e)
+            {
+                return new BaseService($"An error occurred : {e.Message}");
+            }
         }
-        public void Update(string id, Code codeIn) =>
-            _codes.ReplaceOne(code => code.Id == id, codeIn);
+        public BaseService Update(string id, Code codeIn)
+        {
+            try
+            {
+                _codes.ReplaceOne(code => code.Id == id, codeIn);
+                return new BaseService();
+            }
+            catch (Exception e)
+            {
+                return new BaseService($"An error occurred : {e.Message}");
+            }
 
-        public void Remove(Code codeIn) =>
-            _codes.DeleteOne(code => code.Id == codeIn.Id);
+        }
 
-        public void Remove(string id) =>
-            _codes.DeleteOne(car => car.Id == id);
+        public BaseService Remove(string id)
+        {
+            try
+            {
+                _codes.DeleteOne(car => car.Id == id);
+                return new BaseService();
+            }
+            catch (Exception e)
+            {
+                return new BaseService($"An error occurred : {e.Message}");
+            }
+        }
 
         #endregion
     }
