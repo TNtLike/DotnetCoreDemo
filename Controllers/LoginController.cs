@@ -9,11 +9,11 @@ using MyWebApi.Services;
 
 namespace MyWebApi
 {
-    public class ServiceController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly BookService _bookservice;
         private readonly QRCodeService _qrservice;
-        public ServiceController(BookService bookservice, QRCodeService qrservice)
+        public LoginController(BookService bookservice, QRCodeService qrservice)
         {
             _bookservice = bookservice;
             _qrservice = qrservice;

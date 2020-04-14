@@ -4,30 +4,29 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+
 namespace MyWebApi.Services
 {
-    public class BookIndexService : IBaseService<BookIndex>
+    public class BookContentService : IBaseService<BookContent>
     {
-        private readonly IMongoCollection<BookIndex> _bookindex;
-        public BookIndexService(IMongoDBSettings config)
+        private readonly IMongoCollection<BookContent> _bookcontent;
+        public BookContentService(IMongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
-            _bookindex = databases.GetCollection<BookIndex>(nameof(BookIndex));
+            _bookcontent = databases.GetCollection<BookContent>(nameof(BookContent));
         }
-
-        public BookIndex GetT(string bookIndexId) =>
-            _bookindex.Find<BookIndex>(bookIndex => bookIndex.Id == bookIndexId).FirstOrDefault();
-        public IOrderedEnumerable<BookIndex> GetBookIndexs(string bookId) =>
-            _bookindex.Find<BookIndex>(bookIndex => bookIndex.BookId == bookId).ToList().OrderBy(bookIndex => bookIndex.Index);
-        public BookIndex GetBookIndex(string bookId, int index) =>
-            _bookindex.Find<BookIndex>(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index).FirstOrDefault();
-
-        public ServiceResponse Create(BookIndex bookIndex)
+        public BookContent GetT(string bookContextId) =>
+            _bookcontent.Find<BookContent>(content => content.Id == bookContextId).FirstOrDefault();
+        public IOrderedEnumerable<BookContent> GetBookContents(string bookId) =>
+            _bookcontent.Find<BookContent>(content => content.BookId == bookId).ToList().OrderBy(content => content.Index);
+        public BookContent GetBookContent(string bookId, int index) =>
+            _bookcontent.Find<BookContent>(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index).FirstOrDefault();
+        public ServiceResponse Create(BookContent content)
         {
             try
             {
-                _bookindex.InsertOne(bookIndex);
+                _bookcontent.InsertOne(content);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -35,11 +34,11 @@ namespace MyWebApi.Services
                 return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<ServiceResponse> CreateAsync(BookIndex bookIndex)
+        public async Task<ServiceResponse> CreateAsync(BookContent content)
         {
             try
             {
-                await _bookindex.InsertOneAsync(bookIndex);
+                await _bookcontent.InsertOneAsync(content);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -48,11 +47,11 @@ namespace MyWebApi.Services
             }
         }
 
-        public ServiceResponse Update(string bookIndexId, BookIndex bookIndexIn)
+        public ServiceResponse Update(string contentId, BookContent contentIn)
         {
             try
             {
-                _bookindex.ReplaceOne(bookIndex => bookIndex.Id == bookIndexId, bookIndexIn);
+                _bookcontent.ReplaceOne(content => content.Id == contentId, contentIn);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -61,11 +60,11 @@ namespace MyWebApi.Services
             }
 
         }
-        public ServiceResponse UpdateBookIndex(string bookId, int index, BookIndex bookIndexIn)
+        public ServiceResponse UpdateBookIndex(string bookId, int index, BookContent contentIn)
         {
             try
             {
-                _bookindex.ReplaceOne(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index, bookIndexIn);
+                _bookcontent.ReplaceOne(content => content.BookId == bookId && content.Index == index, contentIn);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -73,11 +72,11 @@ namespace MyWebApi.Services
                 return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<ServiceResponse> UpdateBookIndexAsync(string bookId, int index, BookIndex bookIndexIn)
+        public async Task<ServiceResponse> UpdateBookIndexAsync(string bookId, int index, BookContent contentIn)
         {
             try
             {
-                await _bookindex.ReplaceOneAsync(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index, bookIndexIn);
+                await _bookcontent.ReplaceOneAsync(content => content.BookId == bookId && content.Index == index, contentIn);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -85,11 +84,11 @@ namespace MyWebApi.Services
                 return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public ServiceResponse Remove(string bookIndexId)
+        public ServiceResponse Remove(string contentId)
         {
             try
             {
-                _bookindex.DeleteOne(bookIndex => bookIndex.Id == bookIndexId);
+                _bookcontent.DeleteOne(content => content.Id == contentId);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -101,7 +100,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                _bookindex.DeleteOne(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index);
+                _bookcontent.DeleteOne(content => content.BookId == bookId && content.Index == index);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -113,7 +112,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                await _bookindex.DeleteOneAsync(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index);
+                await _bookcontent.DeleteOneAsync(content => content.BookId == bookId && content.Index == index);
                 return new ServiceResponse();
             }
             catch (Exception e)

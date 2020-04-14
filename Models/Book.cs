@@ -18,22 +18,16 @@ namespace MyWebApi.Models
 
     public partial class BookIndex
     {
+        public string Id { get; set; }
         public string BookId { get; set; }
         public int Index { get; set; }
         public string Name { get; set; }
     }
     public partial class BookContent
     {
+        public string Id { get; set; }
         public string BookId { get; set; }
         public int Index { get; set; }
         public string Content { get; set; }
-    }
-    public class Code
-    {
-        public string Id { get; set; }
-        public string UnionId { get; set; }
-        public string Info { get; set; }
-        public int Size { get; set; }
-        public byte[] CodeImg { get; set; }
     }
 }

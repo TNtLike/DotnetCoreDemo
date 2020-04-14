@@ -21,11 +21,15 @@ namespace MyWebApi.Services
             _books.Find<Book>(book => book.Id == id).FirstOrDefault();
 
 
-        public ServiceResponse Create(Book Book)
+        public ServiceResponse Create(Book book)
         {
             try
             {
-                _books.InsertOne(Book);
+                if (!string.IsNullOrEmpty(book.Id))
+                {
+                    return new ServiceResponse($"An error occurred : Error Data");
+                }
+                _books.InsertOne(book);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -33,11 +37,16 @@ namespace MyWebApi.Services
                 return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<ServiceResponse> CreateAsync(Book Book)
+        public async Task<ServiceResponse> CreateAsync(Book book)
         {
             try
             {
-                await _books.InsertOneAsync(Book);
+
+                if (!string.IsNullOrEmpty(book.Id))
+                {
+                    return new ServiceResponse($"An error occurred : Error Data");
+                }
+                await _books.InsertOneAsync(book);
                 return new ServiceResponse();
             }
             catch (Exception e)

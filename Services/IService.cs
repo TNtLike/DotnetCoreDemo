@@ -38,7 +38,6 @@ namespace MyWebApi.Services
     }
     public interface IBaseService<T>
     {
-        List<T> GetTs();
         T GetT(string id);
         ServiceResponse Create(T item);
         ServiceResponse Remove(string id);
