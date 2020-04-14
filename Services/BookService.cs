@@ -5,26 +5,26 @@ using System;
 using System.Threading.Tasks;
 namespace MyWebApi.Services
 {
-    public class CarService : IBaseService<Car>
+    public class BookService : IBaseService<Book>
     {
-        private readonly IMongoCollection<Car> _cars;
-        public CarService(IMongoDBSettings config)
+        private readonly IMongoCollection<Book> _books;
+        public BookService(IMongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
-            _cars = databases.GetCollection<Car>(nameof(Car));
+            _books = databases.GetCollection<Book>(nameof(Book));
         }
-        public List<Car> GetTs() =>
-            _cars.Find<Car>(car => true).ToList();
+        public List<Book> GetTs() =>
+            _books.Find<Book>(Book => true).ToList();
 
-        public Car GetT(string id) =>
-            _cars.Find<Car>(car => car.Id == id).FirstOrDefault();
+        public Book GetT(string id) =>
+            _books.Find<Book>(Book => Book.Id == id).FirstOrDefault();
 
-        public BaseService Create(Car car)
+        public BaseService Create(Book Book)
         {
             try
             {
-                _cars.InsertOne(car);
+                _books.InsertOne(Book);
                 return new BaseService();
             }
             catch (Exception e)
@@ -32,11 +32,11 @@ namespace MyWebApi.Services
                 return new BaseService($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> CreateAsync(Car car)
+        public async Task<BaseService> CreateAsync(Book Book)
         {
             try
             {
-                await _cars.InsertOneAsync(car);
+                await _books.InsertOneAsync(Book);
                 return new BaseService();
             }
             catch (Exception e)
@@ -44,11 +44,11 @@ namespace MyWebApi.Services
                 return new BaseService($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Update(string id, Car carIn)
+        public BaseService Update(string id, Book BookIn)
         {
             try
             {
-                _cars.ReplaceOne(car => car.Id == id, carIn);
+                _books.ReplaceOne(Book => Book.Id == id, BookIn);
                 return new BaseService();
             }
             catch (Exception e)
@@ -56,11 +56,11 @@ namespace MyWebApi.Services
                 return new BaseService($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> UpdateAsync(string id, Car carIn)
+        public async Task<BaseService> UpdateAsync(string id, Book BookIn)
         {
             try
             {
-                await _cars.ReplaceOneAsync(car => car.Id == id, carIn);
+                await _books.ReplaceOneAsync(Book => Book.Id == id, BookIn);
                 return new BaseService();
             }
             catch (Exception e)
@@ -72,7 +72,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                _cars.DeleteOne(car => car.Id == id);
+                _books.DeleteOne(Book => Book.Id == id);
                 return new BaseService();
             }
             catch (Exception e)
@@ -84,7 +84,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                await _cars.DeleteOneAsync(car => car.Id == id);
+                await _books.DeleteOneAsync(Book => Book.Id == id);
                 return new BaseService();
             }
             catch (Exception e)

@@ -19,7 +19,7 @@ namespace MyWebApi
         {
             services.Configure<MyDBSettings>(Configuration.GetSection("CarDBSettings"));
             services.AddSingleton<IMongoDBSettings>(sp => sp.GetRequiredService<IOptions<MyDBSettings>>().Value);
-            services.AddSingleton<CarService>();
+            services.AddSingleton<BookService>();
             services.AddSingleton<QRCodeService>();
             services.AddControllers();
         }

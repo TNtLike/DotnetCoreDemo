@@ -24,11 +24,11 @@ namespace MyWebApi.Services
         /// <summary>
         /// 绘制二维码
         /// </summary>
-        /// <param name="carid">存储内容id</param>
+        /// <param name="unionid">存储内容id</param>
         /// <param name="url">存储内容</param>
         /// <param name="pixel">像素大小</param>
         /// <returns></returns>
-        public Code InitCode(string carid, string url, int pixel)
+        public Code InitCode(string unionid, string url, int pixel)
         {
             QRCodeData codeData = _generator.CreateQrCode(url, QRCodeGenerator.ECCLevel.M, true);
             QRCoder.QRCode qrcode = new QRCoder.QRCode(codeData);
@@ -40,7 +40,7 @@ namespace MyWebApi.Services
             DateTimeOffset dto = new DateTimeOffset(DateTime.Now);
             var unixTime = dto.ToUnixTimeSeconds();
             code.Id = unixTime.ToString();
-            code.CarId = carid;
+            code.UnionId = unionid;
             code.Info = url;
             code.Size = pixel;
             code.CodeImg = bytedata;
@@ -54,9 +54,9 @@ namespace MyWebApi.Services
 
         public Code GetT(string id) =>
             _codes.Find<Code>(code => code.Id == id).FirstOrDefault();
-        public Code GetCarCode(string carid)
+        public Code GetUnionCode(string unionid)
         {
-            Code carcode = _codes.Find<Code>(code => code.CarId == carid).FirstOrDefault();
+            Code carcode = _codes.Find<Code>(code => code.UnionId == unionid).FirstOrDefault();
             return carcode;
         }
 

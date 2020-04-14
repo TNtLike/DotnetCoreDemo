@@ -11,11 +11,11 @@ namespace MyWebApi
 {
     public class ServiceController : ControllerBase
     {
-        private readonly CarService _carservice;
+        private readonly BookService _bookservice;
         private readonly QRCodeService _qrservice;
-        public ServiceController(CarService carserver, QRCodeService qrservice)
+        public ServiceController(BookService bookservice, QRCodeService qrservice)
         {
-            _carservice = carserver;
+            _bookservice = bookservice;
             _qrservice = qrservice;
         }
 
@@ -24,7 +24,7 @@ namespace MyWebApi
         {
             if (string.IsNullOrEmpty(id))
             {
-                List<Car> listmsg = _carservice.GetTs();
+                List<Book> listmsg = _bookservice.GetTs();
                 if (listmsg.Count <= 0)
                 {
                     return NotFound();
@@ -33,7 +33,7 @@ namespace MyWebApi
             }
             else
             {
-                Car rtnmsg = _carservice.GetT(id);
+                Book rtnmsg = _bookservice.GetT(id);
                 if (rtnmsg == null)
                 {
                     return NotFound();
@@ -44,27 +44,27 @@ namespace MyWebApi
         }
 
         [HttpPost]
-        public async Task<IActionResult> Cars([FromBody] Car car)
+        public async Task<IActionResult> Cars([FromBody] Book book)
         {
-            var rtnmsg = await _carservice.CreateAsync(car);
+            var rtnmsg = await _bookservice.CreateAsync(book);
             return Ok(rtnmsg);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Cars(string id, [FromBody] Car car)
+        public async Task<IActionResult> Cars(string id, [FromBody] Book book)
         {
-            var rtnmsg = await _carservice.UpdateAsync(id, car);
+            var rtnmsg = await _bookservice.UpdateAsync(id, book);
             return Ok(rtnmsg);
         }
 
         [HttpGet]
         public IActionResult CarCode(string id)
         {
-            Code codeIn = _qrservice.GetCarCode(id);
+            Code codeIn = _qrservice.GetUnionCode(id);
             if (codeIn == null)
             {
-                Car carIn = _carservice.GetT(id);
-                codeIn = _qrservice.InitCode(id, carIn.CarTypeName, 4);
+                Book bookIn = _bookservice.GetT(id);
+                codeIn = _qrservice.InitCode(id, bookIn.Link, 4);
             }
             return Ok(codeIn);
         }
