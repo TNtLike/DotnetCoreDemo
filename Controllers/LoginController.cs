@@ -11,62 +11,24 @@ namespace MyWebApi
 {
     public class LoginController : ControllerBase
     {
-        private readonly BookService _bookservice;
-        private readonly QRCodeService _qrservice;
-        public LoginController(BookService bookservice, QRCodeService qrservice)
+        private readonly UserService _userservice;
+        public LoginController(UserService userservice)
         {
-            _bookservice = bookservice;
-            _qrservice = qrservice;
-        }
-
-        [HttpGet]
-        public IActionResult Books(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                List<Book> listmsg = _bookservice.GetTs();
-                if (listmsg.Count <= 0)
-                {
-                    return NotFound();
-                }
-                return Ok(listmsg);
-            }
-            else
-            {
-                Book rtnmsg = _bookservice.GetT(id);
-                if (rtnmsg == null)
-                {
-                    return NotFound();
-                }
-                return Ok(rtnmsg);
-            }
-
+            _userservice = userservice;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Books([FromBody] Book book)
+        public async Task<IActionResult> Login()
         {
-            var rtnmsg = await _bookservice.CreateAsync(book);
-            return Ok(rtnmsg);
+            await Task.Delay(100);
+            return NotFound();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Books(string id, [FromBody] Book book)
+        [HttpPost]
+        public async Task<IActionResult> LogUp()
         {
-            var rtnmsg = await _bookservice.UpdateAsync(id, book);
-            return Ok(rtnmsg);
-        }
-
-        [HttpGet]
-        public IActionResult CarCode(string id)
-        {
-            Code codeIn = _qrservice.GetUnionCode(id);
-            if (codeIn == null)
-            {
-                Book bookIn = _bookservice.GetT(id);
-                codeIn = _qrservice.InitCode(id, bookIn.Link, 4);
-            }
-            return Ok(codeIn);
+            await Task.Delay(100);
+            return NotFound();
         }
     }
 }
