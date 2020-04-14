@@ -5,27 +5,27 @@ using System;
 using System.Threading.Tasks;
 namespace MyWebApi.Services
 {
-    public class BookService : IBaseService<Book>
+    public class BookIndexService : IBaseService<BookIndex>
     {
-        private readonly IMongoCollection<Book> _books;
-        public BookService(IMongoDBSettings config)
+        private readonly IMongoCollection<BookIndex> _bookindex;
+        public BookIndexService(IMongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
-            _books = databases.GetCollection<Book>(nameof(Book));
+            _bookindex = databases.GetCollection<BookIndex>(nameof(BookIndex));
         }
-        public List<Book> GetTs() =>
-            _books.Find<Book>(book => true).ToList();
+        public List<BookIndex> GetTs(string bookId) =>
+            _bookindex.Find<BookIndex>(bookIndex => bookIndex.BookId == bookId).ToList();
 
-        public Book GetT(string id) =>
-            _books.Find<Book>(book => book.Id == id).FirstOrDefault();
+        public BookIndex GetT(string bookId, int index) =>
+            _bookindex.Find<BookIndex>(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index).FirstOrDefault();
 
 
-        public BaseService Create(Book Book)
+        public BaseService Create(BookIndex BookIndex)
         {
             try
             {
-                _books.InsertOne(Book);
+                _bookindex.InsertOne(BookIndex);
                 return new BaseService();
             }
             catch (Exception e)
@@ -33,11 +33,11 @@ namespace MyWebApi.Services
                 return new BaseService($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> CreateAsync(Book Book)
+        public async Task<BaseService> CreateAsync(BookIndex BookIndex)
         {
             try
             {
-                await _books.InsertOneAsync(Book);
+                await _bookindex.InsertOneAsync(BookIndex);
                 return new BaseService();
             }
             catch (Exception e)
@@ -45,11 +45,11 @@ namespace MyWebApi.Services
                 return new BaseService($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Update(string id, Book BookIn)
+        public BaseService Update(string bookId, int index, BookIndex BookIn)
         {
             try
             {
-                _books.ReplaceOne(book => book.Id == id, BookIn);
+                _bookindex.ReplaceOne(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index, BookIn);
                 return new BaseService();
             }
             catch (Exception e)
@@ -57,11 +57,11 @@ namespace MyWebApi.Services
                 return new BaseService($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> UpdateAsync(string id, Book BookIn)
+        public async Task<BaseService> UpdateAsync(string id, BookIndex BookIn)
         {
             try
             {
-                await _books.ReplaceOneAsync(book => book.Id == id, BookIn);
+                await _bookindex.ReplaceOneAsync(BookIndex => BookIndex.Id == id, BookIn);
                 return new BaseService();
             }
             catch (Exception e)
@@ -73,7 +73,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                _books.DeleteOne(book => book.Id == id);
+                _bookindex.DeleteOne(BookIndex => BookIndex.Id == id);
                 return new BaseService();
             }
             catch (Exception e)
@@ -85,7 +85,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                await _books.DeleteOneAsync(book => book.Id == id);
+                await _bookindex.DeleteOneAsync(BookIndex => BookIndex.Id == id);
                 return new BaseService();
             }
             catch (Exception e)

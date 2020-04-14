@@ -1,6 +1,4 @@
 using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
 namespace MyWebApi.Models
@@ -14,19 +12,21 @@ namespace MyWebApi.Models
         public int Price { get; set; }
         public DateTime ProdDate { get; set; }
         public int ProdName { get; set; }
-        public List<BookIndex> Index { get; set; }
+        public List<Index> Index { get; set; }
         public string Link { get; set; }
     }
 
-    public class BookIndex
+    public partial class BookIndex
     {
+        public string BookId { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
-        public int Index { get; set; }
     }
-    public class BookIn
+    public partial class BookContent
     {
+        public string BookId { get; set; }
         public int Index { get; set; }
-        public string Info { get; set; }
+        public string Content { get; set; }
     }
     public class Code
     {
