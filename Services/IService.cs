@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MongoDB.Driver;
 
 namespace MyWebApi.Services
 {
@@ -14,25 +15,13 @@ namespace MyWebApi.Services
             Msg = Message;
         }
     }
-    public class BaseService : BaseResponse
+    public class ServiceResponse : BaseResponse
     {
-        private BaseService(bool Success, string Message) : base(Success, Message) { }
-        public BaseService() : this(true, string.Empty) { }
-        public BaseService(string Message) : this(false, Message) { }
+        private ServiceResponse(bool Success, string Message) : base(Success, Message) { }
+        public ServiceResponse() : this(true, string.Empty) { }
+        public ServiceResponse(string Message) : this(false, Message) { }
     }
-    public interface IQRCodeService<T>
-    {
-        T InitCode(string unionid, string url, int pixel);
-    }
-    public interface IBaseService<T>
-    {
-        List<T> GetTs();
-        T GetT(string id);
-        BaseService Create(T item);
-        BaseService Remove(string id);
-        BaseService Update(string id, T item);
 
-    }
     public interface IMongoDBSettings
     {
         string ConnectionString { get; set; }
@@ -42,5 +31,17 @@ namespace MyWebApi.Services
     {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
+    }
+    public interface IQRCodeService<T>
+    {
+        T InitCode(string unionid, string url, int pixel);
+    }
+    public interface IBaseService<T>
+    {
+        List<T> GetTs();
+        T GetT(string id);
+        ServiceResponse Create(T item);
+        ServiceResponse Remove(string id);
+        ServiceResponse Update(string id, T item);
     }
 }

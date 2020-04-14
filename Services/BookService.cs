@@ -21,76 +21,76 @@ namespace MyWebApi.Services
             _books.Find<Book>(book => book.Id == id).FirstOrDefault();
 
 
-        public BaseService Create(Book Book)
+        public ServiceResponse Create(Book Book)
         {
             try
             {
                 _books.InsertOne(Book);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> CreateAsync(Book Book)
+        public async Task<ServiceResponse> CreateAsync(Book Book)
         {
             try
             {
                 await _books.InsertOneAsync(Book);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Update(string id, Book BookIn)
+        public ServiceResponse Update(string id, Book BookIn)
         {
             try
             {
                 _books.ReplaceOne(book => book.Id == id, BookIn);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> UpdateAsync(string id, Book BookIn)
+        public async Task<ServiceResponse> UpdateAsync(string id, Book BookIn)
         {
             try
             {
                 await _books.ReplaceOneAsync(book => book.Id == id, BookIn);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Remove(string id)
+        public ServiceResponse Remove(string id)
         {
             try
             {
                 _books.DeleteOne(book => book.Id == id);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> RemoveAsync(string id)
+        public async Task<ServiceResponse> RemoveAsync(string id)
         {
             try
             {
                 await _books.DeleteOneAsync(book => book.Id == id);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
     }

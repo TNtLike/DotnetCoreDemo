@@ -60,42 +60,42 @@ namespace MyWebApi.Services
             return carcode;
         }
 
-        public BaseService Create(Code code)
+        public ServiceResponse Create(Code code)
         {
             try
             {
                 _codes.InsertOne(code);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Update(string id, Code codeIn)
+        public ServiceResponse Update(string id, Code codeIn)
         {
             try
             {
                 _codes.ReplaceOne(code => code.Id == id, codeIn);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
 
         }
 
-        public BaseService Remove(string id)
+        public ServiceResponse Remove(string id)
         {
             try
             {
                 _codes.DeleteOne(car => car.Id == id);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
 

@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 namespace MyWebApi.Services
 {
-    public class BookIndexService : IBaseService<BookIndex>
+    public class BookIndexService
     {
         private readonly IMongoCollection<BookIndex> _bookindex;
         public BookIndexService(IMongoDBSettings config)
@@ -20,77 +20,76 @@ namespace MyWebApi.Services
         public BookIndex GetT(string bookId, int index) =>
             _bookindex.Find<BookIndex>(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index).FirstOrDefault();
 
-
-        public BaseService Create(BookIndex BookIndex)
+        public ServiceResponse Create(BookIndex BookIndex)
         {
             try
             {
                 _bookindex.InsertOne(BookIndex);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> CreateAsync(BookIndex BookIndex)
+        public async Task<ServiceResponse> CreateAsync(BookIndex BookIndex)
         {
             try
             {
                 await _bookindex.InsertOneAsync(BookIndex);
-                return new BaseService();
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Update(string bookId, int index, BookIndex BookIn)
+        public ServiceResponse Update(string bookId, int index, BookIndex bookIndexIn)
         {
             try
             {
-                _bookindex.ReplaceOne(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index, BookIn);
-                return new BaseService();
+                _bookindex.ReplaceOne(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index, bookIndexIn);
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> UpdateAsync(string id, BookIndex BookIn)
+        public async Task<ServiceResponse> UpdateAsync(string bookId, int index, BookIndex bookIndexIn)
         {
             try
             {
-                await _bookindex.ReplaceOneAsync(BookIndex => BookIndex.Id == id, BookIn);
-                return new BaseService();
+                await _bookindex.ReplaceOneAsync(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index, bookIndexIn);
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public BaseService Remove(string id)
+        public ServiceResponse Remove(string bookId, int index)
         {
             try
             {
-                _bookindex.DeleteOne(BookIndex => BookIndex.Id == id);
-                return new BaseService();
+                _bookindex.DeleteOne(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index);
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<BaseService> RemoveAsync(string id)
+        public async Task<ServiceResponse> RemoveAsync(string bookId, int index)
         {
             try
             {
-                await _bookindex.DeleteOneAsync(BookIndex => BookIndex.Id == id);
-                return new BaseService();
+                await _bookindex.DeleteOneAsync(bookIndex => bookIndex.BookId == bookId && bookIndex.Index == index);
+                return new ServiceResponse();
             }
             catch (Exception e)
             {
-                return new BaseService($"An error occurred : {e.Message}");
+                return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
     }
