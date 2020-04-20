@@ -27,8 +27,15 @@ namespace MyWebApi
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpRequest user)
         {
-            string rtnmsg = await _userservice.CreateAsync(user);
-            return NotFound();
+            var rtnmsg = await _userservice.CreateAsync(user);
+            if (rtnmsg == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(rtnmsg);
+            }
         }
     }
 }
