@@ -24,7 +24,7 @@ namespace MyWebApi
         {
             if (string.IsNullOrEmpty(id))
             {
-                List<Book> listmsg = _bookservice.GetTs();
+                List<Book> listmsg = _bookservice.Gets();
                 if (listmsg.Count <= 0)
                 {
                     return NotFound();
@@ -33,7 +33,7 @@ namespace MyWebApi
             }
             else
             {
-                Book rtnmsg = _bookservice.GetT(id);
+                Book rtnmsg = _bookservice.Get(id);
                 if (rtnmsg == null)
                 {
                     return NotFound();
@@ -63,7 +63,7 @@ namespace MyWebApi
             Code codeIn = _qrservice.GetUnionCode(id);
             if (codeIn == null)
             {
-                Book bookIn = _bookservice.GetT(id);
+                Book bookIn = _bookservice.Get(id);
                 codeIn = _qrservice.InitCode(id, bookIn.Link, 4);
             }
             return Ok(codeIn);

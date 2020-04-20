@@ -14,10 +14,10 @@ namespace MyWebApi.Services
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
             _books = databases.GetCollection<Book>(nameof(Book));
         }
-        public List<Book> GetTs() =>
+        public List<Book> Gets() =>
             _books.Find<Book>(book => true).ToList();
 
-        public Book GetT(string id) =>
+        public Book Get(string id) =>
             _books.Find<Book>(book => book.Id == id).FirstOrDefault();
 
 

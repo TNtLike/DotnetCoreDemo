@@ -16,7 +16,7 @@ namespace MyWebApi.Services
             _bookindex = databases.GetCollection<BookIndex>(nameof(BookIndex));
         }
 
-        public BookIndex GetT(string bookIndexId) =>
+        public BookIndex Get(string bookIndexId) =>
             _bookindex.Find<BookIndex>(bookIndex => bookIndex.Id == bookIndexId).FirstOrDefault();
         public IOrderedEnumerable<BookIndex> GetBookIndexs(string bookId) =>
             _bookindex.Find<BookIndex>(bookIndex => bookIndex.BookId == bookId).ToList().OrderBy(bookIndex => bookIndex.Index);

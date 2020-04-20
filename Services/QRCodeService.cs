@@ -49,10 +49,10 @@ namespace MyWebApi.Services
         }
 
         #region 存储二维码
-        public List<Code> GetTs() =>
+        public List<Code> Gets() =>
             _codes.Find<Code>(code => true).ToList();
 
-        public Code GetT(string id) =>
+        public Code Get(string id) =>
             _codes.Find<Code>(code => code.Id == id).FirstOrDefault();
         public Code GetUnionCode(string unionid)
         {

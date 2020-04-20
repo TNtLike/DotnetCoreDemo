@@ -16,7 +16,7 @@ namespace MyWebApi.Services
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
             _bookcontent = databases.GetCollection<BookContent>(nameof(BookContent));
         }
-        public BookContent GetT(string bookContextId) =>
+        public BookContent Get(string bookContextId) =>
             _bookcontent.Find<BookContent>(content => content.Id == bookContextId).FirstOrDefault();
         public IOrderedEnumerable<BookContent> GetBookContents(string bookId) =>
             _bookcontent.Find<BookContent>(content => content.BookId == bookId).ToList().OrderBy(content => content.Index);

@@ -1,9 +1,23 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Http;
 
 namespace MyWebApi.Services
 {
+    public class SignInRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class SignUpRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Telephone { get; set; }
+        public string Email { get; set; }
+    }
 
     public abstract class BaseResponse
     {
@@ -38,7 +52,7 @@ namespace MyWebApi.Services
     }
     public interface IBaseService<T>
     {
-        T GetT(string id);
+        T Get(string id);
         ServiceResponse Create(T item);
         ServiceResponse Remove(string id);
         ServiceResponse Update(string id, T item);

@@ -17,7 +17,7 @@ namespace MyWebApi
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<MyDBSettings>(Configuration.GetSection("CarDBSettings"));
+            services.Configure<MyDBSettings>(Configuration.GetSection("MongoDBSettings"));
             services.AddSingleton<IMongoDBSettings>(sp => sp.GetRequiredService<IOptions<MyDBSettings>>().Value);
             services.AddSingleton<BookService>();
             services.AddSingleton<QRCodeService>();

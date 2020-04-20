@@ -18,16 +18,16 @@ namespace MyWebApi
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> SignIn(SignInRequest user)
         {
             await Task.Delay(100);
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogUp()
+        public async Task<IActionResult> SignUp(SignUpRequest user)
         {
-            await Task.Delay(100);
+            string rtnmsg = await _userservice.CreateAsync(user);
             return NotFound();
         }
     }

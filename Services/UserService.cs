@@ -15,19 +15,19 @@ namespace MyWebApi.Services
             _users = databases.GetCollection<User>(nameof(User));
         }
 
-        public User GetT(string id) =>
+        public User Get(string id) =>
             _users.Find<User>(user => user.Id == id).FirstOrDefault();
 
 
-        public ServiceResponse Create(User book)
+        public ServiceResponse Create(User user)
         {
             try
             {
-                if (!string.IsNullOrEmpty(book.Id))
+                if (!string.IsNullOrEmpty(user.Id))
                 {
                     return new ServiceResponse($"An error occurred : Error Data");
                 }
-                _users.InsertOne(book);
+                _users.InsertOne(user);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -35,16 +35,19 @@ namespace MyWebApi.Services
                 return new ServiceResponse($"An error occurred : {e.Message}");
             }
         }
-        public async Task<ServiceResponse> CreateAsync(User book)
+        public async Task<ServiceResponse> CreateAsync(SignUpRequest req)
         {
             try
             {
-
-                if (!string.IsNullOrEmpty(book.Id))
+                User user = new User
                 {
-                    return new ServiceResponse($"An error occurred : Error Data");
-                }
-                await _users.InsertOneAsync(book);
+                    Id = Guid.NewGuid().ToString(),
+                    Username = req.Username,
+                    Password = req.Password,
+                    Email = req.Email,
+                    Telephone = req.Telephone
+                };
+                await _users.InsertOneAsync(user);
                 return new ServiceResponse();
             }
             catch (Exception e)
