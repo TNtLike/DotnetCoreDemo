@@ -39,21 +39,51 @@ namespace MyWebApi.Services
         {
             try
             {
-                User user = new User
+                bool ifExit = CheckUser(req);
+                if (ifExit)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Username = req.Username,
-                    Password = req.Password,
-                    Email = req.Email,
-                    Telephone = req.Telephone
-                };
-                await _users.InsertOneAsync(user);
-                return new ServiceResponse();
+                    return new ServiceResponse("An error occurred : The Phone-Number or Email is already used.");
+                }
+                else
+                {
+                    User user = new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Username = req.Username,
+                        Password = req.Password,
+                        Email = req.Email,
+                        Telephone = req.Telephone
+                    };
+                    await _users.InsertOneAsync(user);
+                    return new ServiceResponse();
+                }
+
             }
             catch (Exception e)
             {
                 return new ServiceResponse($"An error occurred : {e.Message}");
             }
+        }
+
+        public Boolean CheckUser(SignUpRequest req)
+        {
+            try
+            {
+                var ifUser = _users.Find<User>(user => user.Telephone == req.Telephone || user.Email == req.Email).FirstOrDefault();
+                if (ifUser == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return true;
+            }
+
         }
         public ServiceResponse Update(string id, User BookIn)
         {

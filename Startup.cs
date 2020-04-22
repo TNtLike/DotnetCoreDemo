@@ -21,6 +21,7 @@ namespace MyWebApi
             services.AddSingleton<IMongoDBSettings>(sp => sp.GetRequiredService<IOptions<MyDBSettings>>().Value);
             services.AddSingleton<BookService>();
             services.AddSingleton<QRCodeService>();
+            services.AddSingleton<UserService>();
             services.AddControllers();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
