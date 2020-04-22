@@ -1,6 +1,0 @@
-{
-  "MongoDBSettings": {
-    "ConnectionString": "mongodb://qlc:qlc987073656@118.25.128.161:17027/app",
-    "DatabaseName": "app"
-  }
-}
