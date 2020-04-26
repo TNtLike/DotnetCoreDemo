@@ -9,7 +9,7 @@ namespace MyWebApi.Services
     public class BookIndexService : IBaseService<BookIndex>
     {
         private readonly IMongoCollection<BookIndex> _bookindex;
-        public BookIndexService(IMongoDBSettings config)
+        public BookIndexService(MongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
@@ -32,7 +32,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
         public async Task<ServiceResponse> CreateAsync(BookIndex bookIndex)
@@ -44,7 +44,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
 
@@ -57,7 +57,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
 
         }
@@ -70,7 +70,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
         public async Task<ServiceResponse> UpdateBookIndexAsync(string bookId, int index, BookIndex bookIndexIn)
@@ -82,7 +82,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
         public ServiceResponse Remove(string bookIndexId)
@@ -94,7 +94,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
         public ServiceResponse RemoveBookIndex(string bookId, int index)
@@ -106,7 +106,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
         public async Task<ServiceResponse> RemoveBookIndexAsync(string bookId, int index)
@@ -118,7 +118,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
     }

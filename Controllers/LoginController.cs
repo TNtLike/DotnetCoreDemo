@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyWebApi.Models;
 using MyWebApi.Services;
-
+using Microsoft.AspNetCore.Authorization;
 namespace MyWebApi
 {
     public class LoginController : ControllerBase
@@ -18,13 +18,22 @@ namespace MyWebApi
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromBody]SignInRequest user)
+        [AllowAnonymous]
+        public async Task<IActionResult> SignIn([FromBody]SignInRequest req)
         {
-            await Task.Delay(100);
-            return NotFound();
+            var rtnmsg = await _userservice.GetUserAsync(req);
+            if (rtnmsg == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(rtnmsg);
+            }
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SignUp([FromBody]SignUpRequest user)
         {
             var rtnmsg = await _userservice.CreateAsync(user);

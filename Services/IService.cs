@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using MongoDB.Driver;
-using Microsoft.AspNetCore.Http;
-
 namespace MyWebApi.Services
 {
     public class SignInRequest
@@ -31,21 +26,32 @@ namespace MyWebApi.Services
     }
     public class ServiceResponse : BaseResponse
     {
-        private ServiceResponse(bool Success, string Message) : base(Success, Message) { }
-        public ServiceResponse() : this(true, string.Empty) { }
-        public ServiceResponse(string Message) : this(false, Message) { }
+        public ServiceResponse(bool Success = true, string Message = "success") : base(Success, Message) { }
     }
 
-    public interface IMongoDBSettings
-    {
-        string ConnectionString { get; set; }
-        string DatabaseName { get; set; }
-    }
-    public class MyDBSettings : IMongoDBSettings
+    public class MongoDBSettings
     {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
+
+
+    public class TokenManagement
+    {
+        public string Secret { get; set; }
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public int AccessExpiration { get; set; }
+        public int RefreshExpiration { get; set; }
+
+    }
+
+    public class Key
+    {
+        public string Secret { get; set; }
+
+    }
+
     public interface IQRCodeService<T>
     {
         T InitCode(string unionid, string url, int pixel);
@@ -54,7 +60,10 @@ namespace MyWebApi.Services
     {
         T Get(string id);
         ServiceResponse Create(T item);
-        ServiceResponse Remove(string id);
         ServiceResponse Update(string id, T item);
+    }
+    public interface IAuthenticateService<T>
+    {
+        string GetAuthenticated(T item);
     }
 }

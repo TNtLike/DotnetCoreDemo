@@ -13,7 +13,7 @@ namespace MyWebApi.Services
 
         private readonly IMongoCollection<Code> _codes;
         private readonly QRCodeGenerator _generator;
-        public QRCodeService(IMongoDBSettings config)
+        public QRCodeService(MongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);
@@ -69,7 +69,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
         public ServiceResponse Update(string id, Code codeIn)
@@ -81,7 +81,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
 
         }
@@ -95,7 +95,7 @@ namespace MyWebApi.Services
             }
             catch (Exception e)
             {
-                return new ServiceResponse($"An error occurred : {e.Message}");
+                return new ServiceResponse(false, $"An error occurred : {e.Message}.");
             }
         }
 

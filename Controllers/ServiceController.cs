@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyWebApi.Models;
 using MyWebApi.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyWebApi
 {
@@ -20,6 +21,7 @@ namespace MyWebApi
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Books(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -44,6 +46,7 @@ namespace MyWebApi
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Books([FromBody] Book book)
         {
             var rtnmsg = await _bookservice.CreateAsync(book);
