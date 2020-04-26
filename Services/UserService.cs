@@ -115,7 +115,7 @@ namespace MyWebApi.Services
         {
             try
             {
-                _users.ReplaceOne(book => book.Id == id, userIn);
+                _users.ReplaceOne(user => user.Id == id, userIn);
                 return new ServiceResponse();
             }
             catch (Exception e)
@@ -149,7 +149,7 @@ namespace MyWebApi.Services
                 };
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var jwtToken = new JwtSecurityToken(_token.Issuer, _token.Audience, claims, expires: DateTime.Now.AddMinutes(_token.AccessExpiration), signingCredentials: credentials);
+                var jwtToken = new JwtSecurityToken(_token.Issuer, _token.Audience, claims, expires: DateTime.Now.AddHours(_token.AccessExpiration), signingCredentials: credentials);
                 token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
             }
             catch (Exception e)
