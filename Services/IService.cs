@@ -5,7 +5,6 @@ namespace MyWebApi.Services
         public string Username { get; set; }
         public string Password { get; set; }
     }
-
     public class SignUpRequest
     {
         public string Username { get; set; }
@@ -13,29 +12,27 @@ namespace MyWebApi.Services
         public string Telephone { get; set; }
         public string Email { get; set; }
     }
-
     public abstract class BaseResponse
     {
         public string Status { get; set; }
         public string Msg { get; set; }
-        public BaseResponse(bool Success, string Message)
+        public dynamic Data { get; set; }
+        public BaseResponse(bool _Success, string _Message, dynamic _Data = null)
         {
-            Status = Success ? "ok" : "error";
-            Msg = Message;
+            Status = _Success ? "ok" : "error";
+            Msg = _Message;
+            Data = _Data;
         }
     }
     public class ServiceResponse : BaseResponse
     {
-        public ServiceResponse(bool Success = true, string Message = "success") : base(Success, Message) { }
+        public ServiceResponse(bool Success = true, string Message = "success", object Data = null) : base(Success, Message, Data) { }
     }
-
     public class MongoDBSettings
     {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
-
-
     public class TokenManagement
     {
         public string Secret { get; set; }
@@ -46,9 +43,9 @@ namespace MyWebApi.Services
 
     }
 
-    public class Key
+    public class OriginsWhiteList
     {
-        public string Secret { get; set; }
+        public string Origin { get; set;}
 
     }
 
@@ -56,14 +53,16 @@ namespace MyWebApi.Services
     {
         T InitCode(string unionid, string url, int pixel);
     }
-    public interface IBaseService<T>
-    {
-        T Get(string id);
-        ServiceResponse Create(T item);
-        ServiceResponse Update(string id, T item);
-    }
     public interface IAuthenticateService<T>
     {
         string GetAuthenticated(T item);
     }
+
+
+    public interface IUserService<T> : IAuthenticateService<T> { }
+    public interface ICodeService<T> : IQRCodeService<T> { }
+    public interface IJobService<T> { }
+    public interface IFileService<T> { }
+
+
 }

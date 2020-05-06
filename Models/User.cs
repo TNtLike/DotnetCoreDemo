@@ -1,9 +1,12 @@
 using System.Collections.Generic;
-
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 namespace MyWebApi.Models
 {
-    public class User
+    public class Account
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -11,18 +14,19 @@ namespace MyWebApi.Models
         public string Email { get; set; }
     }
 
-    public partial class Customer
+    public class User
     {
-        public List<Book> SaveBookList { get; set; }
-        public List<Book> LikeBookList { get; set; }
-        public List<Book> OwnBookList { get; set; }
-    }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
-    public partial class Merchant
-    {
-        public List<Book> PubBookList { get; set; }
-        public List<Book> SoldBookList { get; set; }
-        public List<Book> OwnBookList { get; set; }
+        public string Name { get; set; }
+
+        public List<string> Friend { get; set; }
+
+
+
+
     }
 
 }

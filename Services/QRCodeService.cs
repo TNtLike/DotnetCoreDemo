@@ -8,12 +8,12 @@ using System;
 
 namespace MyWebApi.Services
 {
-    public class QRCodeService : IBaseService<Code>, IQRCodeService<Code>
+    public class CodeService : ICodeService<Code>
     {
 
         private readonly IMongoCollection<Code> _codes;
         private readonly QRCodeGenerator _generator;
-        public QRCodeService(MongoDBSettings config)
+        public CodeService(MongoDBSettings config)
         {
             MongoClient client = new MongoClient(config.ConnectionString);
             IMongoDatabase databases = client.GetDatabase(config.DatabaseName);

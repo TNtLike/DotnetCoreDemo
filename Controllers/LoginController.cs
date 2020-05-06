@@ -9,19 +9,22 @@ using MyWebApi.Services;
 using Microsoft.AspNetCore.Authorization;
 namespace MyWebApi
 {
-    public class LoginController : ControllerBase
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class UserController : ControllerBase
     {
         private readonly UserService _userservice;
-        public LoginController(UserService userservice)
+        public UserController(UserService userservice)
         {
             _userservice = userservice;
         }
 
+
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn([FromBody]SignInRequest req)
+        public async Task<IActionResult> SignIn([FromBody] SignInRequest req)
         {
-            var rtnmsg = await _userservice.GetUserAsync(req);
+            var rtnmsg = await _userservice.GetAccAsync(req);
             if (rtnmsg == null)
             {
                 return NotFound();
@@ -34,7 +37,7 @@ namespace MyWebApi
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SignUp([FromBody]SignUpRequest user)
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequest user)
         {
             var rtnmsg = await _userservice.CreateAsync(user);
             if (rtnmsg == null)

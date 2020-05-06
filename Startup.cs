@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System;
-using System.Threading.Tasks;
 namespace MyWebApi
 {
     public class Startup
     {
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,32 +26,37 @@ namespace MyWebApi
             services.AddSingleton<TokenManagement>(sp => sp.GetRequiredService<IOptions<TokenManagement>>().Value);
             services.Configure<MongoDBSettings>(Configuration.GetSection("MongoDBSettings"));
             services.AddSingleton<MongoDBSettings>(sp => sp.GetRequiredService<IOptions<MongoDBSettings>>().Value);
-
-            var sharedKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("TNtLikeWebApiTokenSecret"));
-            services.AddAuthentication(e =>
+            services.AddAuthentication(x =>
             {
-                e.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                e.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = "TNtLike.WebApi",
-                    ValidAudience = "WebApi",
-                    IssuerSigningKey = sharedKey,
-                    // 是否要求Token的Claims中必须包含Expires
-                    RequireExpirationTime = true,
-                    // 允许的服务器时间偏移量
-                    ClockSkew = TimeSpan.FromSeconds(300),
-                    // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
-                    ValidateLifetime = true
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["TokenManagement:secret"])),
+                    ValidIssuer = Configuration["TokenManagement:issuer"],
+                    ValidAudience = Configuration["TokenManagement:audience"],
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+
                 };
             });
-
-            services.AddSingleton<BookService>();
-            services.AddSingleton<QRCodeService>();
+            services.AddSingleton<CodeService>();
             services.AddSingleton<UserService>();
+            services.AddSingleton<JobService>();
+            services.AddSingleton<FileService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://127.0.0.1:5500");
+                                  });
+            });
             services.AddControllers();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,14 +65,27 @@ namespace MyWebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.Map("/ws", SocketHandler.Map);
+
             app.UseHttpsRedirection();
+
             app.UseRouting();
-            app.UseAuthorization();
+
+            app.UseCors(MyAllowSpecificOrigins);
+
+            // Authentication是认证，明确是你谁，确认是不是合法用户。常用的认证方式有用户名密码认证。
+            // Authorization是授权，明确你是否有某个权限。当用户需要使用某个功能的时候，系统需要校验用户是否需要这个功能的权限。
+
             app.UseAuthentication();
+
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller}/{action}");
+                endpoints.MapControllers();
             });
+
         }
     }
 }
